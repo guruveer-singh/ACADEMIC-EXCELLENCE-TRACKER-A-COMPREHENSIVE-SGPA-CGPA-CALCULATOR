@@ -1,0 +1,89 @@
+#include <iostream>
+
+using namespace std;
+
+class calculateGPA
+{
+public:
+    calculateGPA()
+    {
+        int totalSub;
+        cout << "How many total subjects are there?" << endl;
+        cin >> totalSub;
+
+        int credit[totalSub];
+        int point[totalSub];
+
+        cout << "Grade points hint: A + = 10, A = 9, B + = 8, B = 7, C + = 6, C = 5, D = 4, F = 0\n";
+
+        for (int i = 0; i < totalSub; i++)
+        {
+            cout << "Enter credits of subject " << i + 1 << endl;
+            cin >> credit[i];
+            cout << "Enter Grade point you got in subject " << i + 1 << endl;
+            cin >> point[i];
+        }
+
+        float productofCP = 0;
+        float totalCredits = 0;
+
+        for (int j = 0; j < totalSub; j++)
+        {
+            productofCP += credit[j] * point[j];
+            totalCredits += credit[j];
+        }
+
+        float finalGpa = productofCP / totalCredits;
+        cout << "Your GPA is : " << finalGpa << endl;
+    }
+};
+
+class calculateCGPA
+{
+public:
+    calculateCGPA()
+    {
+        int totalSem;
+        cout << "Enter total number of semesters: ";
+        cin >> totalSem;
+
+        float sum[totalSem];
+
+        for (int i = 0; i < totalSem; i++)
+        {
+            cout << "Enter your GPA of semester " << i + 1 << " : ";
+            cin >> sum[i];
+        }
+
+        float totalCGPA = 0;
+
+        for (int j = 0; j < totalSem; j++)
+        {
+            totalCGPA += sum[j];
+        }
+
+        cout << "Your CGPA is : " << totalCGPA / totalSem << endl;
+    }
+};
+
+int main()
+{
+    cout << "What do you want to calculate (1 for GPA, 2 for CGPA): ";
+    int response;
+    cin >> response;
+    
+    if (response == 1)
+    {
+        calculateGPA gpa;
+    }
+    else if (response == 2)
+    {
+        calculateCGPA cgpa;
+    }
+    else
+    {
+        cout << "Invalid choice." << endl;
+    }
+
+    return 0;
+}
