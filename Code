@@ -1,6 +1,32 @@
 #include <iostream>
+#include <vector>
+#include <string>
+#include <cctype>
 
 using namespace std;
+
+float gradeToPoint(string grade) {
+    // Convert grade string to uppercase for case-insensitivity
+    for (char &c : grade) {
+        c = toupper(c);
+    }
+    if (grade == "A+") return 10.0;
+    else if (grade == "A") return 9.0;
+    else if (grade == "B+") return 8.0;
+    else if (grade == "B") return 7.0;
+    else if (grade == "C+") return 6.0;
+    else if (grade == "C") return 5.0;
+    else if (grade == "D+") return 4.0;
+    else if (grade == "D") return 3.0;
+    else if (grade == "E+") return 2.0;
+    else if (grade == "E") return 1.0;
+    else if (grade == "F") return 0.0;
+    else if (grade == "I") return 0.0;
+    else {
+        cout << "Invalid grade entered. Assuming 0.0" << endl;
+        return 0.0;
+    }
+}
 
 class calculateGPA
 {
@@ -8,33 +34,38 @@ public:
     calculateGPA()
     {
         int totalSub;
-        cout << "How many total subjects are there?" << endl;
+        cout << "How many total subjects are there ?" << endl;
         cin >> totalSub;
 
-        int credit[totalSub];
-        int point[totalSub];
-
-        cout << "Grade points hint: A + = 10, A = 9, B + = 8, B = 7, C + = 6, C = 5, D = 4, F = 0\n";
+        vector<int> credit(totalSub);
+        vector<string> grade(totalSub);
 
         for (int i = 0; i < totalSub; i++)
         {
-            cout << "Enter credits of subject " << i + 1 << endl;
+            cout << "Enter credits of subject " << (i + 1) << endl;
             cin >> credit[i];
-            cout << "Enter Grade point you got in subject " << i + 1 << endl;
-            cin >> point[i];
+            cout << "Enter Grade you got in subject " << (i + 1) << " (e.g., A+, A, B, etc.)" << endl;
+            cin >> grade[i];
         }
 
-        float productofCP = 0;
-        float totalCredits = 0;
-
+        float productofCP = 0.0;
         for (int j = 0; j < totalSub; j++)
         {
-            productofCP += credit[j] * point[j];
-            totalCredits += credit[j];
+            float point = gradeToPoint(grade[j]);
+            productofCP += credit[j] * point;
+        }
+        float totalCredits = 0.0;
+        for (int k = 0; k < totalSub; k++)
+        {
+            totalCredits += credit[k];
         }
 
-        float finalGpa = productofCP / totalCredits;
-        cout << "Your GPA is : " << finalGpa << endl;
+        if (totalCredits == 0) {
+            cout << "Total credits cannot be zero." << endl;
+        } else {
+            float finalGpa = productofCP / totalCredits;
+            cout << "Your GPA is : " << finalGpa << endl;
+        }
     }
 };
 
@@ -44,34 +75,35 @@ public:
     calculateCGPA()
     {
         int totalSem;
-        cout << "Enter total number of semesters: ";
+        cout << "Enter total number of semesters : ";
         cin >> totalSem;
 
-        float sum[totalSem];
-
+        vector<float> gpa(totalSem);
         for (int i = 0; i < totalSem; i++)
         {
-            cout << "Enter your GPA of semester " << i + 1 << " : ";
-            cin >> sum[i];
+            cout << "Enter your GPA of semester " << (i + 1) << " : ";
+            cin >> gpa[i];
         }
 
-        float totalCGPA = 0;
-
+        float totalCGPA = 0.0;
         for (int j = 0; j < totalSem; j++)
         {
-            totalCGPA += sum[j];
+            totalCGPA += gpa[j];
         }
 
-        cout << "Your CGPA is : " << totalCGPA / totalSem << endl;
+        if (totalSem == 0) {
+            cout << "Total semesters cannot be zero." << endl;
+        } else {
+            cout << "Your CGPA is : " << totalCGPA / totalSem << endl;
+        }
     }
 };
 
 int main()
 {
-    cout << "What do you want to calculate (1 for GPA, 2 for CGPA): ";
+    cout << "What do you want to Calculate (1 for GPA, 2 for CGPA): ";
     int response;
     cin >> response;
-    
     if (response == 1)
     {
         calculateGPA gpa;
@@ -84,6 +116,5 @@ int main()
     {
         cout << "Invalid choice." << endl;
     }
-
     return 0;
 }
